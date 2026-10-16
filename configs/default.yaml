@@ -1,0 +1,59 @@
+# FedMed - default experiment: 3 hospitals, encrypted aggregation, differential privacy, TLS.
+run_name: fedmed
+runs_dir: runs
+
+data:
+  source: synthetic        # "synthetic" (offline) | "brats" (set brats_dir)
+  brats_dir: null
+  volume_size: 32
+  n_channels: 2
+  train_per_hospital: 24
+  val_per_hospital: 8
+  test_cases: 12
+  seed: 7
+
+model:
+  name: unet3d             # "unet3d" | "monai_unet"
+  base_filters: 8
+  depth: 3
+
+train:
+  batch_size: 2
+  lr: 0.002
+  local_epochs: 2
+  fedprox_mu: 0.0          # >0 turns FedAvg into FedProx (helps with non-IID hospitals)
+  device: auto
+  seed: 11
+
+federation:
+  num_hospitals: 3
+  rounds: 16
+  host: 127.0.0.1
+  port: 8080
+  min_clients: 2           # a round proceeds if at least this many nodes respond
+  round_timeout_s: 600
+  node_status_base_port: 8101
+
+he:
+  enabled: true            # CKKS: server aggregates ciphertext only
+  poly_modulus_degree: 8192
+  coeff_mod_bit_sizes: [60, 40, 60]
+  global_scale_bits: 40
+
+dp:
+  enabled: true
+  clip_norm: 8.0          # ~ typical update norm for this model; clipping far below it stalls training
+  noise_multiplier: 0.0005 # demo-grade noise; see docs/PRIVACY.md before claiming a formal guarantee
+  delta: 1.0e-5
+
+security:
+  tls: true
+  cert_dir: certs
+  key_dir: keys
+
+dashboard:
+  host: 127.0.0.1
+  port: 8000
+
+audit:
+  min_baseline_ratio: 0.85  # 3 non-IID silos + HE + DP noise: expect to land a bit below the pooled-data ceiling

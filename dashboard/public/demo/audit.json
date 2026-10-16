@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Server has no path to patient data or model code",
+      "passed": true,
+      "detail": "no server-side module imports fedmed.data, fedmed.models, fedmed.training or torch"
+    },
+    {
+      "name": "Federated model approaches the centralized baseline",
+      "passed": true,
+      "detail": "federated Dice 0.909 vs centralized 0.993 (91.5% of baseline, need 85%)"
+    },
+    {
+      "name": "Server holds a public-only HE context",
+      "passed": true,
+      "detail": "he_public.ctx contains no secret key"
+    },
+    {
+      "name": "Every aggregation round was ciphertext-only",
+      "passed": true,
+      "detail": "16 rounds, payload_type=tenseal.ckks.v1, server never held plaintext weights"
+    },
+    {
+      "name": "Training survived node dropouts",
+      "passed": true,
+      "informational": true,
+      "detail": "rounds with a missing node: [4]; all 16 rounds still aggregated"
+    }
+  ]
+}

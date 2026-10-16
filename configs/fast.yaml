@@ -1,0 +1,15 @@
+# Seconds-scale smoke test (used by the integration test and `make smoke`).
+data:
+  volume_size: 16
+  n_channels: 1
+  train_per_hospital: 6
+  val_per_hospital: 3
+  test_cases: 4
+model:
+  base_filters: 4
+  depth: 2
+train:
+  batch_size: 2
+federation:
+  rounds: 3
+  round_timeout_s: 120

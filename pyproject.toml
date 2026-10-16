@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fedmed"
+version = "1.0.0"
+description = "FedMed: cross-silo federated learning with homomorphic-encrypted aggregation and differential privacy for 3D brain-tumor segmentation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "pyyaml>=6.0",
+  "torch>=2.2",
+  "flwr>=1.13,<2",
+  "tenseal>=0.3.14",
+  "cryptography>=42",
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.27",
+  "websockets>=12",
+]
+
+[project.optional-dependencies]
+brats = ["nibabel>=5.0"]
+monai = ["monai>=1.3"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+fedmed = "fedmed.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["fedmed*"]
