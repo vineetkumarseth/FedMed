@@ -69,6 +69,7 @@ export function useRun() {
       socket.onerror = () => socket.close();
     };
 
+    if (import.meta.env.VITE_DEMO_ONLY === "true") { loadSample(); return; }
     connect();
     return () => { closed = true; clearTimeout(retryTimer); socket && socket.close(); };
   }, []);
