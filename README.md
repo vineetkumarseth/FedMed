@@ -2,7 +2,7 @@
 
 **Cross-silo federated learning for brain-tumor MRI segmentation, with encrypted aggregation.**
 
-hree hospitals train one 3D U-Net together without ever sharing a scan. Model updates are
+Three hospitals train one 3D U-Net together without ever sharing a scan. Model updates are
 clipped and noised (differential privacy), encrypted on-site (CKKS homomorphic encryption) and
 sent over gRPC/TLS. The aggregation server adds ciphertexts and cannot read anything it handles.
 A React dashboard shows convergence, node health, the privacy budget, and tumor overlays.
